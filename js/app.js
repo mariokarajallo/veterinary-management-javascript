@@ -21,6 +21,15 @@ const citaObj = {
   sintomas: "",
 };
 
+//!CLASES
+class Citas {}
+
+class UI {}
+
+//instanciamos las clases de manera global
+const ui = new UI();
+const administrarCitas = new Citas();
+
 //!EVENTILISTENER
 eventListeners();
 function eventListeners() {
