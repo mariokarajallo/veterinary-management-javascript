@@ -22,9 +22,42 @@ const citaObj = {
 };
 
 //!CLASES
-class Citas {}
+class Citas {
+  constructor() {
+    this.citas = [];
+  }
+}
 
-class UI {}
+class UI {
+  imprimirAlerta(mensaje, tipo) {
+    //crear el elemento DIV para contener el mensaje dentro
+    const divMensaje = document.createElement("div");
+    divMensaje.classList.add("text-center", "alert", "d-block", "col-12");
+
+    // agregar clase para el estilo en base al tipo de error
+    if (tipo === "error") {
+      divMensaje.classList.add("alert-danger");
+    } else {
+      divMensaje.classList.add("alert-success");
+    }
+
+    //asignando el mensaje de error
+    divMensaje.textContent = mensaje;
+
+    //agregar el mensaje al DOM
+    document
+      .querySelector("#contenido")
+      .insertBefore(divMensaje, document.querySelector(".agregar-cita"));
+
+    //quitar la alerta despues de 5 segundos
+    setTimeout(() => {
+      divMensaje.remove();
+    }, 5000);
+
+    //limpiar formulario
+    formulario.reset();
+  }
+}
 
 //instanciamos las clases de manera global
 const ui = new UI();
@@ -40,6 +73,8 @@ function eventListeners() {
   fechaInput.addEventListener("input", datosCita);
   horaInput.addEventListener("input", datosCita);
   sintomasInput.addEventListener("input", datosCita);
+
+  formulario.addEventListener("submit", nuevaCita);
 }
 
 //!FUNCIONES
@@ -48,4 +83,25 @@ function datosCita(e) {
   // se va asiganando la propiedad del objeto "citaObj" segun llave "name",y valor que el usuario va escribiendo
   citaObj[e.target.name] = e.target.value;
   console.log(citaObj);
+}
+
+//? valida y agrega una nueva cita a la clase de citas
+function nuevaCita(e) {
+  e.preventDefault();
+
+  // extraer la informacion del objeto principal cita
+  const { mascota, propietario, telefono, fecha, hora, sintomas } = citaObj;
+
+  //validar que los campos no esten vacios
+  if (
+    mascota === "" ||
+    propietario === "" ||
+    telefono === "" ||
+    fecha === "" ||
+    hora === "" ||
+    sintomas === ""
+  ) {
+    ui.imprimirAlerta("Todos los campos son obligatorios", "error");
+    return; // si algun campo esta vacio entonces evitamos que se siga ejecutando las siguientes lineas
+  }
 }
