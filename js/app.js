@@ -1,4 +1,5 @@
 //!VARIABLES
+//?campos del formulario
 const mascotaInput = document.querySelector("#mascota");
 const propietarioInput = document.querySelector("#propietario");
 const telefonoInput = document.querySelector("#telefono");
@@ -6,10 +7,11 @@ const fechaInput = document.querySelector("#fecha");
 const horaInput = document.querySelector("#hora");
 const sintomasInput = document.querySelector("#sintomas");
 
+//?UI : interfaz del usuario
 const formulario = document.querySelector("#nueva-cita");
 const contenedorCitas = document.querySelector("#citas");
 
-// objeto donde se guardaran los datos del paciente
+// objeto donde se guardaran los datos del paciente/CITA
 const citaObj = {
   mascotas: "",
   propietario: "",
@@ -32,6 +34,7 @@ function eventListeners() {
 }
 
 //!FUNCIONES
+//? Agrega datos al objeto principal CITA
 function datosCita(e) {
   // se va asiganando la propiedad del objeto "citaObj" segun llave "name",y valor que el usuario va escribiendo
   citaObj[e.target.name] = e.target.value;
