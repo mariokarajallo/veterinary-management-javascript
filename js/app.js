@@ -26,6 +26,11 @@ class Citas {
   constructor() {
     this.citas = [];
   }
+
+  agregarCita(cita) {
+    this.citas = [...this.citas, cita];
+    console.log(this.citas);
+  }
 }
 
 class UI {
@@ -53,9 +58,6 @@ class UI {
     setTimeout(() => {
       divMensaje.remove();
     }, 5000);
-
-    //limpiar formulario
-    formulario.reset();
   }
 }
 
@@ -82,7 +84,7 @@ function eventListeners() {
 function datosCita(e) {
   // se va asiganando la propiedad del objeto "citaObj" segun llave "name",y valor que el usuario va escribiendo
   citaObj[e.target.name] = e.target.value;
-  console.log(citaObj);
+  // console.log(citaObj);
 }
 
 //? valida y agrega una nueva cita a la clase de citas
@@ -104,4 +106,25 @@ function nuevaCita(e) {
     ui.imprimirAlerta("Todos los campos son obligatorios", "error");
     return; // si algun campo esta vacio entonces evitamos que se siga ejecutando las siguientes lineas
   }
+  // generar un ID
+  citaObj.id = Date.now();
+
+  //creando una nueva cita, le pasamos una copia del objeto ->spreadoperator
+  administrarCitas.agregarCita({ ...citaObj });
+
+  //reiniciar el objeto para la validacion
+  reiniciarCitaObj();
+
+  //limpia formulario luego de agregar una nueva cita
+  formulario.reset();
+}
+
+//? limpia el objeto principal para volver a guardar nuevos datos
+function reiniciarCitaObj() {
+  citaObj.mascota = "";
+  citaObj.propietario = "";
+  citaObj.telefono = "";
+  citaObj.fecha = "";
+  citaObj.hora = "";
+  citaObj.sintomas = "";
 }
