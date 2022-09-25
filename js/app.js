@@ -59,6 +59,10 @@ class UI {
       divMensaje.remove();
     }, 5000);
   }
+
+  imprimirCitas(citas) {
+    console.log(citas);
+  }
 }
 
 //instanciamos las clases de manera global
@@ -117,6 +121,9 @@ function nuevaCita(e) {
 
   //limpia formulario luego de agregar una nueva cita
   formulario.reset();
+
+  //mostar el HTML de las citas
+  ui.imprimirCitas(administrarCitas);
 }
 
 //? limpia el objeto principal para volver a guardar nuevos datos
