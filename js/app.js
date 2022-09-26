@@ -236,3 +236,21 @@ function eliminarCita(id) {
   // le pasamos todo el objeto por que en el metodo de la clase desde el parametro aplica el destructuring
   ui.imprimirCitas(administrarCitas);
 }
+
+//? carga los datos y el modo de edicion
+function cargarEdicion(cita) {
+  //extraemos los elementos de la cita que estamos recibiendo -> destructuring
+  const { mascota, propietario, telefono, fecha, hora, sintomas } = cita;
+
+  //llenamos los inputs del formulario con los datos del objeto recibido
+  mascotaInput.value = mascota;
+  propietarioInput.value = propietario;
+  telefonoInput.value = telefono;
+  fechaInput.value = fecha;
+  horaInput.value = hora;
+  sintomasInput.value = mascota;
+
+  //cambiar el texto del boton a "Guardar cambios"
+  formulario.querySelector('button[type="submit"]').textContent =
+    "Guardar Cambios";
+}
