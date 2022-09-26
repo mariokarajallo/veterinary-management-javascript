@@ -31,6 +31,10 @@ class Citas {
     this.citas = [...this.citas, cita];
     console.log(this.citas);
   }
+
+  eliminarCita(id) {
+    this.citas = this.citas.filter((cita) => cita.id !== id);
+  }
 }
 
 class UI {
@@ -207,4 +211,17 @@ function reiniciarCitaObj() {
   citaObj.fecha = "";
   citaObj.hora = "";
   citaObj.sintomas = "";
+}
+
+//? elimina la cita agregada por el usuario
+function eliminarCita(id) {
+  //elimina la cita
+  administrarCitas.eliminarCita(id);
+
+  //muestra el mensaje de que se elimino correctamente, no es necesario mandar el tipo
+  ui.imprimirAlerta("La cita se elimino correctamente");
+
+  //Refresca/actualiza las citas que se muestran en el HTML
+  // le pasamos todo el objeto por que en el metodo de la clase desde el parametro aplica el destructuring
+  ui.imprimirCitas(administrarCitas);
 }
