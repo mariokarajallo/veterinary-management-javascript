@@ -21,6 +21,9 @@ const citaObj = {
   sintomas: "",
 };
 
+//
+let editando;
+
 //!CLASES
 class Citas {
   constructor() {
@@ -198,11 +201,34 @@ function nuevaCita(e) {
     ui.imprimirAlerta("Todos los campos son obligatorios", "error");
     return; // si algun campo esta vacio entonces evitamos que se siga ejecutando las siguientes lineas
   }
-  // generar un ID
-  citaObj.id = Date.now();
 
-  //creando una nueva cita, le pasamos una copia del objeto ->spreadoperator
-  administrarCitas.agregarCita({ ...citaObj });
+  // preguntamos si el usuario esta editando -> modo edicion
+  if (editando) {
+    console.log("modo edicion");
+    //mensaje de editado correctamente
+    ui.imprimirAlerta("Editado Correctamente");
+
+    //pasar el objeto de la cita a edicion
+
+    //cambiamos el texto del boton
+    formulario.querySelector('button[type="submit"]').textContent =
+      "Crear Cita";
+
+    //quitar modo edicion
+    editando = false;
+  } else {
+    // si es una nueva cita asiganamos un ID y tambien agregamos al arreglo de citas
+    console.log("modo nueva cita");
+
+    // generar un ID
+    citaObj.id = Date.now();
+
+    //creando una nueva cita, le pasamos una copia del objeto ->spreadoperator
+    administrarCitas.agregarCita({ ...citaObj });
+
+    //mensaje de agregado correctamente
+    ui.imprimirAlerta("Se agrego Correctamente");
+  }
 
   //reiniciar el objeto para la validacion
   reiniciarCitaObj();
@@ -240,7 +266,7 @@ function eliminarCita(id) {
 //? carga los datos y el modo de edicion
 function cargarEdicion(cita) {
   //extraemos los elementos de la cita que estamos recibiendo -> destructuring
-  const { mascota, propietario, telefono, fecha, hora, sintomas } = cita;
+  const { mascota, propietario, telefono, fecha, hora, sintomas, id } = cita;
 
   //llenamos los inputs del formulario con los datos del objeto recibido
   mascotaInput.value = mascota;
@@ -250,7 +276,19 @@ function cargarEdicion(cita) {
   horaInput.value = hora;
   sintomasInput.value = mascota;
 
+  // llenar el objeto con los campos actuales
+  citaObj.mascota = mascota;
+  citaObj.propietario = propietario;
+  citaObj.telefono = telefono;
+  citaObj.fecha = fecha;
+  citaObj.hora = hora;
+  citaObj.sintomas = sintomas;
+  citaObj.id = id;
+
   //cambiar el texto del boton a "Guardar cambios"
   formulario.querySelector('button[type="submit"]').textContent =
     "Guardar Cambios";
+
+  // una vez entrando a la funcion cargarEdicion la variable editando pasa a true
+  editando = true;
 }
