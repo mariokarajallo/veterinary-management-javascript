@@ -38,6 +38,15 @@ class Citas {
   eliminarCita(id) {
     this.citas = this.citas.filter((cita) => cita.id !== id);
   }
+
+  editarCita(citaActualizada) {
+    //.map no .filter -> filter quita un elemento, o quita los demas elementos y mantiene uno basado en una condicion
+    // .map a diferencia de forEach, nos crea un nuevo arreglo, ambos iteran sobre el arreglo
+    // iteramos el array de citas, verificamos que tengan el mismo ID, si es asi se reescribe todo el objeto que recibimos, si no mantemos nuestros elementos de la cita actual
+    this.citas = this.citas.map((cita) =>
+      cita.id == citaActualizada.id ? citaActualizada : cita
+    );
+  }
 }
 
 class UI {
@@ -209,6 +218,8 @@ function nuevaCita(e) {
     ui.imprimirAlerta("Editado Correctamente");
 
     //pasar el objeto de la cita a edicion
+    // no pasamos el objeto global completo, si no una copia
+    administrarCitas.editarCita({ ...citaObj });
 
     //cambiamos el texto del boton
     formulario.querySelector('button[type="submit"]').textContent =
@@ -274,7 +285,7 @@ function cargarEdicion(cita) {
   telefonoInput.value = telefono;
   fechaInput.value = fecha;
   horaInput.value = hora;
-  sintomasInput.value = mascota;
+  sintomasInput.value = sintomas;
 
   // llenar el objeto con los campos actuales
   citaObj.mascota = mascota;
