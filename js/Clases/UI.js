@@ -1,3 +1,6 @@
+import { eliminarCita, cargarEdicion } from "../funciones.js";
+import { contenedorCitas } from "../selectores.js";
+
 export default class UI {
   imprimirAlerta(mensaje, tipo) {
     //crear el elemento DIV para contener el mensaje dentro
