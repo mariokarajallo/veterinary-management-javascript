@@ -1,3 +1,16 @@
+import Citas from "./Clases/Citas.js";
+import UI from "./Clases/UI.js";
+
+import {
+  mascotaInput,
+  propietarioInput,
+  telefonoInput,
+  fechaInput,
+  horaInput,
+  sintomasInput,
+  formulario,
+} from "./selectores.js";
+
 // objeto donde se guardaran los datos del paciente/CITA
 const citaObj = {
   mascotas: "",
