@@ -64,18 +64,31 @@ export function nuevaCita(e) {
   // preguntamos si el usuario esta editando -> modo edicion
   if (editando) {
     console.log("modo edicion");
-    //mensaje de editado correctamente
-    ui.imprimirAlerta("Editado Correctamente");
 
     //pasar el objeto de la cita a edicion
     // no pasamos el objeto global completo, si no una copia
     administrarCitas.editarCita({ ...citaObj });
 
-    //cambiamos el texto del boton
-    formulario.querySelector('button[type="submit"]').value = "Crear Cita";
+    //edita en indexeDB
+    const transaction = DB.transaction(["citas"], "readwrite");
+    const objectStore = transaction.objectStore("citas");
 
-    //quitar modo edicion
-    editando = false;
+    objectStore.put(citaObj);
+
+    transaction.oncomplete = () => {
+      //mensaje de editado correctamente
+      ui.imprimirAlerta("Editado Correctamente");
+
+      //cambiamos el texto del boton
+      formulario.querySelector('button[type="submit"]').value = "Crear Cita";
+
+      //quitar modo edicion
+      editando = false;
+    };
+
+    transaction.onerror = () => {
+      console.log("Hubo un error!");
+    };
   } else {
     //nuevo registro
     // si es una nueva cita asiganamos un ID y tambien agregamos al arreglo de citas

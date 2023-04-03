@@ -109,6 +109,7 @@ export default class UI {
 </svg>
 `;
         //accion al darle click, pasamos el objeto completo de cita
+        const cita = cursor.value;
         btnEditar.onclick = () => cargarEdicion(cita);
 
         //agregar los parrafos al DIV
