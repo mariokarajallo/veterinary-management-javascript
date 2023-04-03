@@ -23,7 +23,7 @@ const citaObj = {
 
 //
 let editando;
-let DB;
+export let DB;
 
 //
 
@@ -116,7 +116,7 @@ export function nuevaCita(e) {
   formulario.reset();
 
   //mostar el HTML de las citas
-  ui.imprimirCitas(administrarCitas);
+  ui.imprimirCitas();
 }
 
 //? limpia el objeto principal para volver a guardar nuevos datos
@@ -138,8 +138,7 @@ export function eliminarCita(id) {
   ui.imprimirAlerta("La cita se elimino correctamente");
 
   //Refresca/actualiza las citas que se muestran en el HTML
-  // le pasamos todo el objeto por que en el metodo de la clase desde el parametro aplica el destructuring
-  ui.imprimirCitas(administrarCitas);
+  ui.imprimirCitas();
 }
 
 //? carga los datos y el modo de edicion
@@ -186,6 +185,9 @@ export function crearDB() {
     console.log("DB creada");
 
     DB = crearDB.result;
+
+    // mostrar citas al cargar (pero indexedb ya esta listo)
+    ui.imprimirCitas();
   };
 
   // define el squema
