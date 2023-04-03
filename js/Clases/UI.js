@@ -1,5 +1,5 @@
 import { eliminarCita, cargarEdicion, DB } from "../funciones.js";
-import { contenedorCitas } from "../selectores.js";
+import { contenedorCitas, heading } from "../selectores.js";
 
 export default class UI {
   imprimirAlerta(mensaje, tipo) {
@@ -32,8 +32,17 @@ export default class UI {
   imprimirCitas() {
     this.limpiarHTML();
 
+    this.textoHeading();
+
     //leer el contenido de la base de datos
     const objectStore = DB.transaction("citas").objectStore("citas");
+
+    const fnTextoHeading = this.textoHeading;
+    const total = objectStore.count();
+    total.onsuccess = function () {
+      // console.log(total.result);
+      fnTextoHeading(total.result);
+    };
 
     //openCursos se encargar de rerrocer/iterar todos los elementos de la base de datos
     objectStore.openCursor().onsuccess = function (e) {
@@ -119,6 +128,14 @@ export default class UI {
         cursor.continue();
       }
     };
+  }
+
+  textoHeading(resultado) {
+    if (resultado > 0) {
+      heading.textContent = "Administra tus Citas";
+    } else {
+      heading.textContent = "No hay citas, comienza creando una cita";
+    }
   }
 
   limpiarHTML() {
