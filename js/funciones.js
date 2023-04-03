@@ -144,14 +144,24 @@ export function reiniciarCitaObj() {
 
 //? elimina la cita agregada por el usuario
 export function eliminarCita(id) {
-  //elimina la cita
-  administrarCitas.eliminarCita(id);
+  const transaction = DB.transaction(["citas"], "readwrite");
+  const objectStore = transaction.objectStore("citas");
 
-  //muestra el mensaje de que se elimino correctamente, no es necesario mandar el tipo
-  ui.imprimirAlerta("La cita se elimino correctamente");
+  objectStore.delete(id);
 
-  //Refresca/actualiza las citas que se muestran en el HTML
-  ui.imprimirCitas();
+  transaction.oncomplete = () => {
+    console.log(`cita ${id} eliminada...`);
+
+    //muestra el mensaje de que se elimino correctamente, no es necesario mandar el tipo
+    ui.imprimirAlerta("La cita se elimino correctamente");
+
+    //Refresca/actualiza las citas que se muestran en el HTML
+    ui.imprimirCitas();
+  };
+
+  transaction.onerror = () => {
+    console.log("hubo un error");
+  };
 }
 
 //? carga los datos y el modo de edicion
