@@ -13,7 +13,7 @@ import {
 
 // objeto donde se guardaran los datos del paciente/CITA
 const citaObj = {
-  mascotas: "",
+  mascota: "",
   propietario: "",
   telefono: "",
   fecha: "",
@@ -24,6 +24,11 @@ const citaObj = {
 //
 let editando;
 let DB;
+
+//
+
+//
+
 //instanciamos las clases de manera global
 const ui = new UI();
 const administrarCitas = new Citas();
@@ -67,12 +72,12 @@ export function nuevaCita(e) {
     administrarCitas.editarCita({ ...citaObj });
 
     //cambiamos el texto del boton
-    formulario.querySelector('button[type="submit"]').textContent =
-      "Crear Cita";
+    formulario.querySelector('button[type="submit"]').value = "Crear Cita";
 
     //quitar modo edicion
     editando = false;
   } else {
+    //nuevo registro
     // si es una nueva cita asiganamos un ID y tambien agregamos al arreglo de citas
     console.log("modo nueva cita");
 
@@ -82,8 +87,26 @@ export function nuevaCita(e) {
     //creando una nueva cita, le pasamos una copia del objeto ->spreadoperator
     administrarCitas.agregarCita({ ...citaObj });
 
-    //mensaje de agregado correctamente
-    ui.imprimirAlerta("Se agrego Correctamente");
+    // insertar registros del formulario en la base de datos indexedb
+    const transaction = DB.transaction(["citas"], "readwrite");
+
+    //habilitar el objectstore
+    const objectStore = transaction.objectStore("citas");
+
+    // insertar en la base de datos
+    objectStore.add(citaObj);
+
+    // si todo salio bien
+    transaction.oncomplete = function () {
+      console.log("cita agregada correctamente");
+
+      //mensaje de agregado correctamente
+      ui.imprimirAlerta("Se agrego Correctamente");
+    };
+
+    transaction.onerror = () => {
+      console.log("Hubo un error!");
+    };
   }
 
   //reiniciar el objeto para la validacion
@@ -161,6 +184,8 @@ export function crearDB() {
   //si no hay problemas
   crearDB.onsuccess = function () {
     console.log("DB creada");
+
+    DB = crearDB.result;
   };
 
   // define el squema
